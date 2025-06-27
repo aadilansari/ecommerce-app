@@ -1,31 +1,22 @@
-import {
-  ADD_TO_CART,
-  REMOVE_FROM_CART,
-  ADJUST_QUANTITY,
-  CLEAR_CART
-} from './types';
+import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from './types';
 
-export const addToCart = (item) => (dispatch) => {
-  dispatch({
-    type: ADD_TO_CART,
-    payload: item
-  });
+export const addToCart = (product) => (dispatch, getState) => {
+  dispatch({ type: ADD_TO_CART, payload: product });
+  const {
+    cart: { items },
+  } = getState();
+  localStorage.setItem('cart', JSON.stringify(items));
 };
 
-export const removeFromCart = (id) => (dispatch) => {
-  dispatch({
-    type: REMOVE_FROM_CART,
-    payload: id
-  });
-};
-
-export const adjustQuantity = (id, qty) => (dispatch) => {
-  dispatch({
-    type: ADJUST_QUANTITY,
-    payload: { id, qty }
-  });
+export const removeFromCart = (id) => (dispatch, getState) => {
+  dispatch({ type: REMOVE_FROM_CART, payload: id });
+  const {
+    cart: { items },
+  } = getState();
+  localStorage.setItem('cart', JSON.stringify(items));
 };
 
 export const clearCart = () => (dispatch) => {
+  localStorage.removeItem('cart');
   dispatch({ type: CLEAR_CART });
 };

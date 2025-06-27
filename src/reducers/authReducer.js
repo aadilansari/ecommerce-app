@@ -1,47 +1,17 @@
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT
-} from '../actions/types';
+import { LOGIN_SUCCESS, LOGOUT } from '../actions/types';
 
+const stored = JSON.parse(localStorage.getItem('user'));
 const initialState = {
-  user: null,
-  isAuthenticated: false,
-  loading: false,
-  error: null
+  user: stored || null,
 };
 
-export const authReducer = (state = initialState, action) => {
+export default function authReducer(state = initialState, action) {
   switch (action.type) {
-    case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      return {
-        ...state,
-        user: action.payload,
-        isAuthenticated: true,
-        loading: false,
-        error: null
-      };
-    case REGISTER_FAIL:
-    case LOGIN_FAIL:
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-        loading: false,
-        error: action.payload
-      };
+      return { ...state, user: action.payload };
     case LOGOUT:
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-        loading: false,
-        error: null
-      };
+      return { ...state, user: null };
     default:
       return state;
   }
-};
+}

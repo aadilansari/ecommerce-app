@@ -8,16 +8,16 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Dashboard from './components/Dashboard/UserDashboard';
 import CartList from './components/Cart/CartList';
-import Payment from './components/Checkout/Payment';
 import PrivateRoute from './components/Shared/PrivateRoute';
 import Header from './components/Shared/header';
+import ErrorBoundary from './components/Shared/ErrorBoundary';
+import PaymentPage from './components/Checkout/Payment';
 
 const App = () => {
-  // Removed the loadUser dispatch since we don't have that action in authActions.js
-  // You can add it later if needed
 
   return (
     <Provider store={store}>
+      <ErrorBoundary>
       <Router>
         <div className="App">
           <Header/>
@@ -32,14 +32,19 @@ const App = () => {
                 element={<PrivateRoute component={Dashboard} />}
               />
               <Route path="/cart" element={<CartList />} />
-              <Route
-                path="/payment"
-                element={<PrivateRoute component={Payment} />}
-              />
+            <Route
+  path="/payment"
+  element={
+    <PrivateRoute>
+    <PaymentPage/>
+    </PrivateRoute>
+  }
+/>
             </Routes>
           </div>
         </div>
       </Router>
+      </ErrorBoundary>
     </Provider>
   );
 };

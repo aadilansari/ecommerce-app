@@ -1,29 +1,32 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../../actions/productActions';
+import { fetchProducts, fetchCategories, fetchByCategory } from '../../actions/productActions';
 import ProductCard from './ProductCard';
 import Loading from '../Shared/Loading';
+import CategoryFilter from '../UI/CategoryFilter';
 
-const ProductList = () => {
+export default function ProductList() {
   const dispatch = useDispatch();
-  const { products, loading, error } = useSelector((state) => state.products);
+  const { list, categories, loading } = useSelector((s) => s.products);
 
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   if (loading) return <Loading />;
-  if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
-    <div className="row">
-      {products.map((product) => (
-        <div key={product.id} className="col-md-4 mb-4">
-          <ProductCard product={product} />
-        </div>
-      ))}
+    <div className="p-6">
+      <CategoryFilter
+        categories={categories}
+        onSelect={(c) => (c ? dispatch(fetchByCategory(c)) : dispatch(fetchProducts()))}
+      />
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {list.map((p) => (
+          <ProductCard key={p.id} product={p} />
+        ))}
+      </div>
     </div>
   );
-};
-
-export default ProductList;
+}

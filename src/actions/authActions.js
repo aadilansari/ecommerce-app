@@ -1,47 +1,17 @@
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT
-} from './types';
+import { LOGIN_SUCCESS, LOGOUT, REGISTER_SUCCESS } from './types';
 
-export const register = (userData) => async (dispatch) => {
-  try {
-    // In a real app, you would make an API call here
-    // For demo, we'll just simulate success
-    dispatch({
-      type: REGISTER_SUCCESS,
-      payload: userData
-    });
-  } catch (err) {
-    dispatch({
-      type: REGISTER_FAIL,
-      payload: err.message
-    });
-  }
-};
-
-export const login = (credentials) => async (dispatch) => {
-  try {
-    // Simulate API call
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: {
-        email: credentials.email,
-        name: 'Demo User'
-      }
-    });
-  } catch (err) {
-    dispatch({
-      type: LOGIN_FAIL,
-      payload: err.message
-    });
-  }
+export const login = (email) => (dispatch) => {
+  // In real life we would POST to /login; here we fake it.
+  localStorage.setItem('user', JSON.stringify({ email }));
+  dispatch({ type: LOGIN_SUCCESS, payload: { email } });
 };
 
 export const logout = () => (dispatch) => {
+  localStorage.removeItem('user');
   dispatch({ type: LOGOUT });
 };
 
-export { login, logout };
+export const register = (email) => (dispatch) => {
+  // Fake register
+  dispatch({ type: REGISTER_SUCCESS });
+};

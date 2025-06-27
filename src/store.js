@@ -1,21 +1,8 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { thunk } from 'redux-thunk';  // Changed to named import
-import { composeWithDevTools } from '@redux-devtools/extension';
-import { authReducer } from './reducers/authReducer';
-import { productReducer } from './reducers/productReducer';
-import { cartReducer } from './reducers/cartReducer';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { thunk } from 'redux-thunk';
+import rootReducer from './reducers';
 
-const rootReducer = combineReducers({
-  auth: authReducer,
-  products: productReducer,
-  cart: cartReducer
-});
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const middleware = [thunk];
-
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
-
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 export default store;

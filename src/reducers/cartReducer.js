@@ -1,53 +1,24 @@
-import {
-  ADD_TO_CART,
-  REMOVE_FROM_CART,
-  ADJUST_QUANTITY,
-  CLEAR_CART
-} from '../actions/types';
+import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from '../actions/types';
 
 const initialState = {
-  cartItems: []
+  items: JSON.parse(localStorage.getItem('cart')) || [],
 };
 
-export const cartReducer = (state = initialState, action) => {
+export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_TO_CART:
-      const item = action.payload;
-      const existItem = state.cartItems.find((x) => x.id === item.id);
-      
-      if (existItem) {
-        return {
-          ...state,
-          cartItems: state.cartItems.map((x) =>
-            x.id === existItem.id ? { ...x, qty: x.qty + 1 } : x
-          )
-        };
-      } else {
-        return {
-          ...state,
-          cartItems: [...state.cartItems, { ...item, qty: 1 }]
-        };
-      }
+      const exists = state.items.find((i) => i.id === action.payload.id);
+      return {
+        ...state,
+        items: exists
+          ? state.items.map((i) => (i.id === exists.id ? { ...i, qty: i.qty + 1 } : i))
+          : [...state.items, { ...action.payload, qty: 1 }],
+      };
     case REMOVE_FROM_CART:
-      return {
-        ...state,
-        cartItems: state.cartItems.filter((x) => x.id !== action.payload)
-      };
-    case ADJUST_QUANTITY:
-      return {
-        ...state,
-        cartItems: state.cartItems.map((item) =>
-          item.id === action.payload.id
-            ? { ...item, qty: action.payload.qty }
-            : item
-        )
-      };
+      return { ...state, items: state.items.filter((i) => i.id !== action.payload) };
     case CLEAR_CART:
-      return {
-        ...state,
-        cartItems: []
-      };
+      return { ...state, items: [] };
     default:
       return state;
   }
-};
+}
