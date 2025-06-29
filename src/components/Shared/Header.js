@@ -8,7 +8,7 @@ export default function Header() {
   const dispatch = useDispatch();
   return (
     <header className="shadow p-4 flex justify-between items-center">
-      <Link to="/" className="font-bold text-xl">FakeStore</Link>
+      <Link to="/" className="font-bold text-xl ">Star Store</Link>
       <nav className="flex gap-4 items-center">
         <Link to="/cart">Cart ({cartCount})</Link>
         {user ? (

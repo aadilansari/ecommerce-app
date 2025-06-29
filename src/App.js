@@ -12,6 +12,7 @@ import PrivateRoute from './components/Shared/PrivateRoute';
 import Header from './components/Shared/header';
 import ErrorBoundary from './components/Shared/ErrorBoundary';
 import PaymentPage from './components/Checkout/Payment';
+import Footer from './components/Shared/Footer';
 
 const App = () => {
 
@@ -32,16 +33,10 @@ const App = () => {
                 element={<PrivateRoute component={Dashboard} />}
               />
               <Route path="/cart" element={<CartList />} />
-            <Route
-  path="/payment"
-  element={
-    <PrivateRoute>
-    <PaymentPage/>
-    </PrivateRoute>
-  }
-/>
+            <Route path="/payment" element={<PrivateRoute><PaymentPage/></PrivateRoute>}/>
             </Routes>
           </div>
+          <Footer />
         </div>
       </Router>
       </ErrorBoundary>
